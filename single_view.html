@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detaljer om planten</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main>
+      <button>Tilbage til forrige side</button>
+      <section>
+        <template>
+          <article>
+            <h3></h3>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <img src="" alt="" />
+          </article>
+        </template>
+      </section>
+    </main>
+
+    <script>
+      /*____url søgeparameter____*/
+      const urlParams = new URLSearchParams(window.location.search);
+      /*___går op i søger efter id__*/
+      const id = urlParams.get("id");
+      console.log({ id });
+      let planter;
+
+      const url = `https://planter-5959.restdb.io/rest/planter/${id}`;
+      const key = "620f56fb34fd621565858796";
+      const options = {
+        headers: {
+          "x-apikey": key,
+        },
+      };
+
+      async function hentdata() {
+        const respons = await fetch(url, options);
+        planter = await respons.json();
+        console.log("planter", planter);
+        vis();
+      }
+
+      function vis() {
+        document.querySelector("h3").textContent = planter.navn;
+        document.querySelector("p").textContent = planter.oprindelse;
+        document.querySelector("p").textContent = planter.vandbehov;
+        document.querySelector("p").textContent = planter.lysforhold;
+        document.querySelector("p").textContent = planter.placering;
+        document.querySelector("p").textContent = planter.temperatur;
+        /* i tvivl om hvordan billeder skal stilles op */
+        document.querySelector("img").src = "plante_billeder/" + planter.billed;
+      }
+
+      hentdata();
+
+      document.querySelector("button").addEventListener("click", () => {
+        history.back();
+      });
+    </script>
+  </body>
+</html>
